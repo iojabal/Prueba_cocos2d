@@ -22,12 +22,12 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __HELLOWORLD_SCENE_H__
-#define __HELLOWORLD_SCENE_H__
+#ifndef __LevelFBH_H__
+#define __LevelFBH_H__
 
 #include "cocos2d.h"
 
-class HelloWorld : public cocos2d::Scene
+class Sceneone : public cocos2d::Scene
 {
 public:
     static cocos2d::Scene* createScene();
@@ -39,9 +39,10 @@ public:
 
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
+    void goBack(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
-    CREATE_FUNC(HelloWorld);
+    CREATE_FUNC(Sceneone);
 
 private:
     cocos2d::Sprite* _player;
@@ -49,11 +50,13 @@ private:
     cocos2d::PhysicsWorld* sceneWorld;
     bool isGrounded;
 
+    int rnd;
+    int rnd2;
+    cocos2d::Sprite* cloned;
     void SetPhysiscWorld(cocos2d::PhysicsWorld* world) { sceneWorld = world; }
     bool onContactBegin(cocos2d::PhysicsContact& contact);
     void jumpPlayer(cocos2d::EventKeyboard::KeyCode Keycode, cocos2d::Event* event);
     void initKeyboard();
     void drawBack();
 };
-
-#endif // __HELLOWORLD_SCENE_H__
+#endif

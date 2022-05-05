@@ -22,7 +22,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "HelloWorldScene.h"
+#include "LevelFBH.h"
 #include "DrawEnvieronment.h"
 #include "stdlib.h"
 #include "time.h"
@@ -30,13 +30,13 @@
 
 USING_NS_CC;
 
-Scene* HelloWorld::createScene()
+Scene* Sceneone::createScene()
 {
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+  //  scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_;
     scene->getPhysicsWorld()->setGravity(Vec2(0, -100));
 
-    auto layer = HelloWorld::create();
+    auto layer = Sceneone::create();
     layer->SetPhysiscWorld(scene->getPhysicsWorld());
 
     scene->addChild(layer);
@@ -51,7 +51,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool Sceneone::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -73,29 +73,34 @@ bool HelloWorld::init()
   /*Fin Hitbox Scenario*/
 
     
+    auto exitButton = MenuItemImage::create("layers/buttonexit.png", "layers/buttonexit.png", CC_CALLBACK_1(Sceneone::goBack, this));
+    float x = origin.x + visibleSize.width - exitButton->getContentSize().width / 2;
+    float y = origin.y + exitButton->getContentSize().height / 2;
+    exitButton->setPosition(Vec2(x, y));
 
 
-/*
 
-    auto spriteFondo = cocos2d::Sprite::create("layers/bg1.png");
-    auto spriteFondo2 = cocos2d::Sprite::create("layers/bg2.png");
-    auto spriteFondo3 = cocos2d::Sprite::create("layers/bg3.png");
+
+    auto spriteFondo = cocos2d::Sprite::create("layers/BG3 (3).png");
+    auto spriteFondo2 = cocos2d::Sprite::create("layers/BG1 (2).png");
+    auto spriteFondo3 = cocos2d::Sprite::create("layers/BG3 (2).png");
     auto spriteFondo4 = cocos2d::Sprite::create("layers/bg4.png");
     auto spriteFondo5 = cocos2d::Sprite::create("layers/bg5.png");
     obstacleLayer = cocos2d::Sprite::create("layers/obstacle.png");
     _player = cocos2d::Sprite::create("layers/player.png");
+    cloned = cocos2d::Sprite::createWithSpriteFrame(obstacleLayer->getSpriteFrame());
 
     //auto spriteFondo = cocos2d::Sprite::create("layers/bg1.png");
     spriteFondo->setAnchorPoint(cocos2d::Vec2::ZERO);
     spriteFondo->setPosition(cocos2d::Vec2::ZERO);
-    spriteFondo->setScaleX(1.8);
-    spriteFondo->setScaleY(1.9);
+    spriteFondo->setScaleX(1.7);
+    spriteFondo->setScaleY(1.7);
     addChild(spriteFondo, 0);
 
     spriteFondo2->setAnchorPoint(cocos2d::Vec2::ZERO);
     spriteFondo2->setPosition(cocos2d::Vec2::ZERO);
-    spriteFondo2->setScaleX(2);
-    spriteFondo2->setScaleY(3);
+    spriteFondo2->setScaleX(1.65);
+    spriteFondo2->setScaleY(1.65);
     addChild(spriteFondo2, 1);
 
     spriteFondo3->setAnchorPoint(cocos2d::Vec2::ZERO);
@@ -135,7 +140,16 @@ bool HelloWorld::init()
     spriteBody2->setCollisionBitmask(2);
     spriteBody2->setContactTestBitmask(true);
     obstacleLayer->setPhysicsBody(spriteBody2);
-    addChild(obstacleLayer, 10);
+    addChild(obstacleLayer, 4);
+
+    cloned->setScale(obstacleLayer->getScaleX(), obstacleLayer->getScaleY());
+    auto spriteBody3 = PhysicsBody::createBox(obstacleLayer->getContentSize()/2, PhysicsMaterial(0,0,0));
+    spriteBody3->setCollisionBitmask(2);
+    spriteBody3->setContactTestBitmask(true);
+    cloned->setPosition(obstacleLayer->getPosition() - Vec2(100, 0));
+    cloned->setPhysicsBody(spriteBody3);
+    addChild(cloned, 4);
+   
     
     
 
@@ -144,12 +158,16 @@ bool HelloWorld::init()
     this->scheduleUpdate();
     
     auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(HelloWorld::onContactBegin, this);
-    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);*/
+    contactListener->onContactBegin = CC_CALLBACK_1(Sceneone::onContactBegin, this);
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 
+
+    auto* menu = Menu::create(exitButton, NULL);
+    menu->setPosition(Point(0, 0));
+    this->addChild(menu, 100);
 
     initKeyboard();
-    drawBack();
+   //drawBack();
     this->scheduleUpdate();
 
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/audio2.mp3");
@@ -159,24 +177,34 @@ bool HelloWorld::init()
     return true;
 }
 
-void HelloWorld::update(float delta) {
-    log("Posicion en Y: %5.2f ", _player->getPositionY());
-    log("Posicion del anchor point: %5.2f", _player->getAnchorPointInPoints());
+void Sceneone::update(float delta) {
+    log("valor variable aleatoria: %d ", rnd);
+   rnd = random(200, 300);
+   rnd2 = random(400, 500);
+    //log("Posicion del anchor point: %5.2f", _player->getAnchorPointInPoints());
+    auto positionx = cloned->getPosition();
     auto position = obstacleLayer->getPosition();
-    position.x -= 100 * delta;
+    position.x -= rnd * delta;
+    positionx.x -= rnd2 * delta;
    // position.y += 100 * delta;
     if (position.x < 0 - (obstacleLayer->getBoundingBox().size.width / 2)) {
         position.x = this->getBoundingBox().getMaxX() + obstacleLayer->getBoundingBox().size.width / 2;
+        
+        //obstacleLayer->removeFromParentAndCleanup(true);
+    }
+    else if (positionx.x < 0 - (cloned->getBoundingBox().size.width / 2)) {
+        positionx.x = this->getBoundingBox().getMaxX() + obstacleLayer->getBoundingBox().size.width / 2;
     }
     obstacleLayer->setPosition(position);
+    cloned->setPosition(positionx);
 
-    //int rnd = 0 + rand() % (11 - 0);
+    
 }
 
-bool HelloWorld::onContactBegin(cocos2d::PhysicsContact& contact) {
+bool Sceneone::onContactBegin(cocos2d::PhysicsContact& contact) {
     auto a = contact.getShapeA()->getBody()->getNode();
-    auto b = contact.getShapeB()->getBody()->getNode();
-
+    auto b = contact.getShapeB()->getBody()->getNode();;
+    log("aqui si entra");
     if (1 == a->getPhysicsBody()->getCollisionBitmask() && 2 == b->getPhysicsBody()->getCollisionBitmask() ||
         2 == a->getPhysicsBody()->getCollisionBitmask() && 1 == b->getPhysicsBody()->getCollisionBitmask()) {
         log("ocurrio una colisioon");
@@ -186,7 +214,7 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact& contact) {
 }
 
 
-void HelloWorld::menuCloseCallback(Ref* pSender)
+void Sceneone::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
@@ -200,9 +228,9 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 }
 
 
-void HelloWorld::jumpPlayer(cocos2d::EventKeyboard::KeyCode Keycode, cocos2d::Event* event)\
+void Sceneone::jumpPlayer(cocos2d::EventKeyboard::KeyCode Keycode, cocos2d::Event* event)\
 {
-    isGrounded = _player->getPositionY() <= 32.1;
+   
 
     log("Tecla presionada %d", Keycode);
     if (Keycode == cocos2d::EventKeyboard::KeyCode::KEY_A) {
@@ -214,6 +242,7 @@ void HelloWorld::jumpPlayer(cocos2d::EventKeyboard::KeyCode Keycode, cocos2d::Ev
         _player->runAction(moveBy);
     } 
     if (Keycode == cocos2d::EventKeyboard::KeyCode::KEY_SPACE) {
+        isGrounded = _player->getPositionY() <= 32.1;
         auto jumpBy = cocos2d::JumpBy::create(1, Vec2(00, 50), 150, 1);
         auto rotate = cocos2d::RotateBy::create(1, 90);
         if (isGrounded == true) {
@@ -224,10 +253,18 @@ void HelloWorld::jumpPlayer(cocos2d::EventKeyboard::KeyCode Keycode, cocos2d::Ev
     }
 }
 
-void HelloWorld::initKeyboard()
+void Sceneone::initKeyboard()
 {
     auto listener = cocos2d::EventListenerKeyboard::create();
-    listener->onKeyPressed = CC_CALLBACK_2(HelloWorld::jumpPlayer, this);
+    listener->onKeyPressed = CC_CALLBACK_2(Sceneone::jumpPlayer, this);
     //listener->onKeyReleased
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+}
+
+void Sceneone::goBack(cocos2d::Ref* pSender) {
+    CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/mainmusic.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/mainmusic.mp3", true);
+    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.15);
+    Director::getInstance()->popScene();
 }

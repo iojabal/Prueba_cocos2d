@@ -4,7 +4,7 @@
     <ClCompile Include="F:\cocos2\Prueba\Classes\AppDelegate.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="F:\cocos2\Prueba\Classes\HelloWorldScene.cpp">
+    <ClCompile Include="..\Classes\LevelFBH.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="F:\cocos2\Prueba\proj.win32\main.cpp">
@@ -13,7 +13,13 @@
     <ClCompile Include="F:\cocos2\Prueba\cocos2d\cocos\precheader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\DrawEnvieronment.h">
+    <ClCompile Include="..\Classes\LevelJAT.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LevelLE.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MainMenu.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -21,7 +27,7 @@
     <ClInclude Include="F:\cocos2\Prueba\Classes\AppDelegate.h">
       <Filter>Source Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="F:\cocos2\Prueba\Classes\HelloWorldScene.h">
+    <ClInclude Include="..\Classes\LevelFBH.h">
       <Filter>Source Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="F:\cocos2\Prueba\proj.win32\main.h">
@@ -49,6 +55,15 @@
       <Filter>Resources\res</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SimpleAudioEngine.h">
+      <Filter>Source Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LevelJAT.h">
+      <Filter>Source Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LevelLE.h">
+      <Filter>Source Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainMenu.h">
       <Filter>Source Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>

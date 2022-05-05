@@ -1,6 +1,6 @@
-#include "HelloWorldScene.h"
+#include "LevelFBH.h"
 
-inline void HelloWorld::drawBack() {
+inline void Sceneone::drawBack() {
     auto spriteFondo = cocos2d::Sprite::create("layers/bg1.png");
     auto spriteFondo2 = cocos2d::Sprite::create("layers/bg2.png");
     auto spriteFondo3 = cocos2d::Sprite::create("layers/bg3.png");
@@ -55,6 +55,7 @@ inline void HelloWorld::drawBack() {
     obstacleLayer->setPosition(cocos2d::Vec2(1080, 50));
     obstacleLayer->setScaleX(0.4);
     obstacleLayer->setScaleY(0.4);
+    obstacleLayer->setParent(obstacleLayer);
     auto spriteBody2 = cocos2d::PhysicsBody::createBox((obstacleLayer->getContentSize())*2/3, cocos2d::PhysicsMaterial(0, 0, 0));
     spriteBody2->setCollisionBitmask(2);
     spriteBody2->setContactTestBitmask(true);
@@ -68,7 +69,7 @@ inline void HelloWorld::drawBack() {
    
 
     auto contactListener = cocos2d::EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(HelloWorld::onContactBegin, this);
+    contactListener->onContactBegin = CC_CALLBACK_1(Sceneone::onContactBegin, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 
